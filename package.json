@@ -1,0 +1,16 @@
+{
+  "name": "stripeserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "*",
+    "express": "*",
+    "stripe": "*"
+  },
+  "author": "Boundty",
+  "license": "Boundty123"
+}
