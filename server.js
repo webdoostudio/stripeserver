@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json())
 
 //Confirm the API version from your stripe dashboard
-const stripe = Stripe(stripeSecretKey, { apiVersion: "2020-08-27" });
+const stripe = Stripe(stripeSecretKey, { apiVersion: "2023-10-16" });
 
 app.get("/get-publishable-key", async(req, res) => {
   if(stripePublishableKey.length){
