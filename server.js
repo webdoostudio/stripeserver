@@ -25,7 +25,7 @@ app.get("/get-publishable-key", async(req, res) => {
 })
 
 app.post("/create-payment-intent", async (req, res) => {
-  const { paymentMethodType, currency, amount, receipt_email, customer, receipt_number } = req.body;
+  const { paymentMethodType, currency, amount, receipt_email, customer } = req.body;
   try {
     let stripeCustomer;
 
@@ -49,7 +49,6 @@ app.post("/create-payment-intent", async (req, res) => {
       payment_method_types: [paymentMethodType],
       description: 'Boundty payment',
       receipt_email: receipt_email,
-      receipt_number: receipt_number,
       customer: stripeCustomer.id, // Link payment to customer profile
     });
 
