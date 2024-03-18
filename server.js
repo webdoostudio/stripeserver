@@ -25,24 +25,21 @@ app.get("/get-publishable-key", async(req, res) => {
 })
 
 app.post("/create-payment-intent", async (req, res) => {
-  const {paymentMethodType, currency, amount, receipt_email} = req.body;
+  const {paymentMethodType, currency, amount, receipt_email, customer} = req.body;
   try {
+    // Create customer profile in Stripe
+    const stripeCustomer = await stripe.customers.create({
+      name: customer.name,
+      email: customer.email,
+    });
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Number(amount) * 100, //lowest denomination of particular currency
       currency: currency,
       payment_method_types: [paymentMethodType],
       description: 'Boundty payment',
       receipt_email: receipt_email,
-      // shipping: {
-      //   name: 'Jenny Rosen',
-      //   address: {
-      //     line1: '510 Townsend St',
-      //     postal_code: '98140',
-      //     city: 'San Francisco',
-      //     state: 'CA',
-      //     country: 'US',
-      //   },
-      // }, 
+      customer: stripeCustomer.id,
     });
 
     const clientSecret = paymentIntent.client_secret;
