@@ -27,12 +27,21 @@ app.get("/get-publishable-key", async(req, res) => {
 app.post("/create-payment-intent", async (req, res) => {
   const {paymentMethodType, currency, amount, receipt_email, customer} = req.body;
   try {
-    // Create customer profile in Stripe
-    const stripeCustomer = await stripe.customers.create({
-      name: customer.name,
-      email: customer.email,
-    });
+    let stripeCustomer;
 
+    // Check if customer already exists in Stripe
+    const existingCustomers = await stripe.customers.list({ email: customer.email });
+    if (existingCustomers.data.length > 0) {
+      // Customer already exists, use the first customer found
+      stripeCustomer = existingCustomers.data[0];
+    } else {
+      // Create customer profile in Stripe
+      stripeCustomer = await stripe.customers.create({
+        name: customer.name,
+        email: customer.email,
+      });
+    }
+    
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Number(amount) * 100, //lowest denomination of particular currency
       currency: currency,
