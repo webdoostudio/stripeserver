@@ -42,9 +42,6 @@ app.post("/create-payment-intent", async (req, res) => {
           country: 'US',
         },
       }, 
-    }, {
-      // Add the Stripe secret key as a bearer token in the Authorization header
-      api_key: stripeSecretKey,
     });
 
     const clientSecret = paymentIntent.client_secret;
