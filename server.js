@@ -25,11 +25,11 @@ app.get("/get-publishable-key", async(req, res) => {
 })
 
 app.post("/create-payment-intent", async (req, res) => {
-  const {paymentMethodType, currency, amount, receipt_email, customer} = req.body;
+  const { paymentMethodType, currency, amount, receipt_email, customer } = req.body;
   try {
     let stripeCustomer;
 
-    // Check if customer already exists in Stripe
+    // Search for existing customers in Stripe by email
     const existingCustomers = await stripe.customers.list({ email: customer.email });
     if (existingCustomers.data.length > 0) {
       // Customer already exists, use the first customer found
@@ -41,14 +41,15 @@ app.post("/create-payment-intent", async (req, res) => {
         email: customer.email,
       });
     }
-    
+
+    // Create payment intent with customer ID
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Number(amount) * 100, //lowest denomination of particular currency
+      amount: Number(amount) * 100,
       currency: currency,
       payment_method_types: [paymentMethodType],
       description: 'Boundty payment',
       receipt_email: receipt_email,
-      customer: stripeCustomer.id,
+      customer: stripeCustomer.id, // Link payment to customer profile
     });
 
     const clientSecret = paymentIntent.client_secret;
