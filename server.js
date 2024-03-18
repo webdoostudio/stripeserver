@@ -31,17 +31,18 @@ app.post("/create-payment-intent", async (req, res) => {
       amount: Number(amount) * 100, //lowest denomination of particular currency
       currency: currency,
       payment_method_types: [paymentMethodType],
-      description: 'Software development services',
-      shipping: {
-        name: 'Jenny Rosen',
-        address: {
-          line1: '510 Townsend St',
-          postal_code: '98140',
-          city: 'San Francisco',
-          state: 'CA',
-          country: 'US',
-        },
-      }, 
+      description: 'Boundty payment',
+      receipt_email: receipt_email,
+      // shipping: {
+      //   name: 'Jenny Rosen',
+      //   address: {
+      //     line1: '510 Townsend St',
+      //     postal_code: '98140',
+      //     city: 'San Francisco',
+      //     state: 'CA',
+      //     country: 'US',
+      //   },
+      // }, 
     });
 
     const clientSecret = paymentIntent.client_secret;
