@@ -58,6 +58,7 @@ app.post("/create-payment-intent", async (req, res) => {
 
     res.json({
       clientSecret: clientSecret,
+      charge: charge,
 
     });
   } catch (e) {
