@@ -56,7 +56,6 @@ app.post("/create-payment-intent", async (req, res) => {
 
     res.json({
       clientSecret: clientSecret,
-      paymentId: paymentIntent.id,
     });
   } catch (e) {
     console.log(e.message);
