@@ -52,7 +52,7 @@ app.post("/create-payment-intent", async (req, res) => {
       customer: stripeCustomer.id, // Link payment to customer profile
     });
 
-    const clientSecret = paymentIntent.charges;
+    const clientSecret = paymentIntent.client_secret;
 
     res.json({
       clientSecret: clientSecret,
