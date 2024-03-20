@@ -53,7 +53,12 @@ app.post("/create-payment-intent", async (req, res) => {
     });
 
     const clientSecret = paymentIntent.client_secret;
-    const receiptUrl = paymentIntent.charges.data[0].receipt_url;
+
+    // Retrieve charge data
+    const chargeId = paymentIntent.charges.data[0].id; // Assuming there's only one charge associated with the payment intent
+    const charge = await stripe.charges.retrieve(chargeId);
+    const receiptUrl = charge.receipt_url;    
+
 
     res.json({
       clientSecret: clientSecret,
