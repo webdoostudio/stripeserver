@@ -53,9 +53,12 @@ app.post("/create-payment-intent", async (req, res) => {
     });
 
     const clientSecret = paymentIntent.client_secret;
+    const receiptUrl = paymentIntent.charges.data[0].receipt_url;
 
     res.json({
       clientSecret: clientSecret,
+      receiptUrl: receiptUrl,
+
     });
   } catch (e) {
     console.log(e.message);
