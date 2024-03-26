@@ -53,16 +53,44 @@ app.post("/create-payment-intent", async (req, res) => {
     });
 
     const clientSecret = paymentIntent.client_secret;
+    const paymentId = paymentIntent.id;
 
     res.json({
       clientSecret: clientSecret,
-
+      paymentId: paymentId,
     });
+
+    // Retrieve receipt URL after successful payment
+    if (paymentIntent.status === 'succeeded') {
+      await retrieveReceiptUrl(paymentId);
+    }
+
   } catch (e) {
     console.log(e.message);
     res.json({ error: e.message });
   }
 });
+
+
+async function retrieveReceiptUrl(paymentIntentId) {
+  try {
+    // Retrieve PaymentIntent with expanded 'latest_charge'
+    const paymentIntent = await stripe.paymentIntents.retrieve(
+      paymentIntentId,
+      { expand: ['latest_charge'] }
+    );
+
+    const receiptUrl = paymentIntent.latest_charge.receipt_url;
+
+    if (receiptUrl) {
+      console.log("Receipt URL:", receiptUrl);
+    } else {
+      console.log("Receipt not yet available");
+    }
+  } catch (error) {
+    console.error("Error retrieving receipt URL:", error);
+  }
+}
 
 app.all(/.*/, (req, res) => {
   res.statusCode = (404)
