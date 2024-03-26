@@ -79,7 +79,7 @@ app.get("/get-payment-details/:paymentId", async (req, res) => {
  } catch (e) {
    console.log(e.message);
    console.log(paymentId);
-   res.json({ error: paymentIntent });
+   res.json({ error: e.message });
    res.status(500).json({ error: "Failed to retrieve payment details" });
  }
 });
