@@ -49,13 +49,17 @@ app.post("/create-payment-intent", async (req, res) => {
       payment_method_types: [paymentMethodType],
       description: 'Boundty payment',
       receipt_email: receipt_email,
-      customer: stripeCustomer.id, // Link payment to customer profile
+      customer: stripeCustomer.id,
+      // Expand latest_charge to fetch receipt_url
+  	  expand: ['latest_charge']  // Link payment to customer profile
     });
 
     const clientSecret = paymentIntent.client_secret;
+    const receipt_url = paymentIntent.latest_charge.receipt_url; // Access receipt_url
 
     res.json({
       clientSecret: clientSecret,
+      receipt_url: receipt_url
 
     });
   } catch (e) {
