@@ -71,12 +71,6 @@ app.get("/get-payment-details/:paymentId", async (req, res) => {
  try {
    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
 
-    console.log("Payment Intent:", paymentIntent); // Log paymentIntent
-    res.json({
-      paymentIntent: paymentIntent // Send paymentIntent to frontend
-    });
-
-
    const receiptUrl = paymentIntent.charges.data[0].receipt_url;
    
    res.json({
@@ -85,6 +79,10 @@ app.get("/get-payment-details/:paymentId", async (req, res) => {
 
  } catch (e) {
    console.log(e.message);
+   console.log("Payment Intent:", paymentIntent); // Log paymentIntent
+    res.json({
+      paymentIntent: paymentIntent // Send paymentIntent to frontend
+    });
    res.status(500).json({ error: "Failed to retrieve payment details" });
  }
 });
