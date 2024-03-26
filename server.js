@@ -66,16 +66,19 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
-app.get("/get-payment-details/:paymentId", async (req, res) => {
- const paymentId = req.params.paymentId;
+app.get("/get-payment-details", async (req, res) => {
  try {
+   const paymentId = req.query.paymentId;
+   if (!paymentId) {
+     return res.status(400).json({ error: "Payment ID is required" });
+   }
+
    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
    const receiptUrl = paymentIntent.charges.data[0].receipt_url;
    
    res.json({
      receiptUrl: receiptUrl
    });
-   
  } catch (e) {
    console.log(e.message);
    res.status(500).json({ error: "Failed to retrieve payment details" });
