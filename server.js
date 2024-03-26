@@ -66,6 +66,23 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
+app.get("/get-payment-details/:paymentId", async (req, res) => {
+ const paymentId = req.params.paymentId;
+ try {
+   const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+   const receiptUrl = paymentIntent.charges.data[0].receipt_url;
+   
+   res.json({
+     receiptUrl: receiptUrl
+   });
+   
+ } catch (e) {
+   console.log(e.message);
+   res.status(500).json({ error: "Failed to retrieve payment details" });
+ }
+});
+
+
 app.all(/.*/, (req, res) => {
   res.statusCode = (404)
   res.send('Invalid Endpoint.')
