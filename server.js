@@ -55,9 +55,15 @@ app.post("/create-payment-intent", async (req, res) => {
     const clientSecret = paymentIntent.client_secret;
     const paymentId = paymentIntent.id;
 
+    // Retrieve receipt URL from the paymentIntent's latest charge
+    const latestChargeId = paymentIntent.charges.data[0].id;
+    const latestCharge = await stripe.charges.retrieve(latestChargeId);
+    const receiptUrl = latestCharge.receipt_url;    
+
     res.json({
       clientSecret: clientSecret,
       paymentId: paymentId,
+      receiptUrl: receiptUrl,
     });
 
     // Retrieve receipt URL after successful payment
