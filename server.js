@@ -70,12 +70,12 @@ app.get("/get-payment-details/:paymentId", async (req, res) => {
  const paymentId = req.params.paymentId;
  try {
    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
-
-   const receiptUrl = paymentIntent.charges.data[0].receipt_url;
-   
-   res.json({
-     receiptUrl: receiptUrl
-   });
+    if (paymentIntent.charges && paymentIntent.charges.data.length > 0) {
+      const receiptUrl = paymentIntent.charges.data[0].receipt_url;
+      res.json({ receiptUrl: receiptUrl });
+    } else {
+      res.status(404).json({ error: "No charges found for this payment intent" });
+    }
 
  } catch (e) {
    console.log(e.message);
