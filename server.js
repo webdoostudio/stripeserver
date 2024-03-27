@@ -52,6 +52,8 @@ app.post("/create-payment-intent", async (req, res) => {
       customer: stripeCustomer.id, // Link payment to customer profile
     });
 
+    console.log("Payment Intent:", paymentIntent);
+    
     const clientSecret = paymentIntent.client_secret;
     const paymentId = paymentIntent.id;
 
@@ -65,8 +67,6 @@ app.post("/create-payment-intent", async (req, res) => {
     res.json({ error: e.message });
   }
 });
-
-console.log("Payment Intent:", paymentIntent);
 
 // app.get("/get-payment-details/:paymentId", async (req, res) => {
 //  const paymentId = req.params.paymentId;
