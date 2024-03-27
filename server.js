@@ -47,7 +47,7 @@ app.post("/create-payment-intent", async (req, res) => {
       amount: Number(amount) * 100,
       currency: currency,
       payment_method_types: [paymentMethodType],
-      description: 'Boundty payment',
+      description: 'Boundty service',
       receipt_email: receipt_email,
       customer: stripeCustomer.id, // Link payment to customer profile
     });
