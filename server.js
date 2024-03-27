@@ -78,7 +78,8 @@ app.get("/get-payment-details/:paymentId", async (req, res) => {
    });
 
  } catch (e) {
-    console.error("Failed to retrieve payment details:", e.message);
+   console.log(e.message);
+   res.json({ error: e.message });
    res.status(500).json({ error: "Failed to retrieve payment details" });
  }
 });
