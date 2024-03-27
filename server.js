@@ -52,8 +52,6 @@ app.post("/create-payment-intent", async (req, res) => {
       customer: stripeCustomer.id, // Link payment to customer profile
     });
 
-    console.log("Payment Intent:", paymentIntent);
-    
     const clientSecret = paymentIntent.client_secret;
     const paymentId = paymentIntent.id;
 
@@ -68,26 +66,32 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
-// app.get("/get-payment-details/:paymentId", async (req, res) => {
-//  const paymentId = req.params.paymentId;
-//  try {
-//    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+app.get("/get-payment-details/:paymentId", async (req, res) => {
+  const paymentId = req.params.paymentId;
+  try {
+    // Retrieve the payment intent
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+    
+    // Get the latest charge ID associated with the payment intent
+    const latestChargeId = paymentIntent.latest_charge;
 
-//    console.log("Payment Intent:", paymentIntent);
+      // Retrieve the charge data using the latest charge ID
+      const charge = await stripe.charges.retrieve(latestChargeId);
 
-//     if (paymentIntent.charges && paymentIntent.charges.data.length > 0) {
-//       const receiptUrl = paymentIntent.charges.data[0].receipt_url;
-//       res.json({ receiptUrl: receiptUrl });
-//     } else {
-//       res.status(404).json({ error: "No charges found for this payment intent" });
-//     }
+      // Extract the receipt URL from the charge data
+      const receiptUrl = charge.receipt_url;
 
-//  } catch (e) {
-//    console.log(e.message);
-//    res.json({ error: e.message });
-//    res.status(500).json({ error: "Failed to retrieve payment details" });
-//  }
-// });
+      console.log('receiptUrl:', receiptUrl);
+
+      // Return the receipt URL in the response
+      res.json({ receiptUrl: receiptUrl });        
+
+  } catch (e) {
+    console.error("Failed to retrieve payment details:", e.message);
+    res.status(500).json({ error: "Failed to retrieve payment details" });
+  }
+});
+
 
 
 app.all(/.*/, (req, res) => {
