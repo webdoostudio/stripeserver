@@ -70,6 +70,9 @@ app.get("/get-payment-details/:paymentId", async (req, res) => {
  const paymentId = req.params.paymentId;
  try {
    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+
+   console.log("Payment Intent:", paymentIntent);
+   
     if (paymentIntent.charges && paymentIntent.charges.data.length > 0) {
       const receiptUrl = paymentIntent.charges.data[0].receipt_url;
       res.json({ receiptUrl: receiptUrl });
