@@ -52,6 +52,8 @@ app.post("/create-payment-intent", async (req, res) => {
       customer: stripeCustomer.id, // Link payment to customer profile
     });
 
+console.log("Payment Intent:", paymentIntent);
+
     const clientSecret = paymentIntent.client_secret;
     const paymentId = paymentIntent.id;
 
@@ -66,26 +68,26 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
-app.get("/get-payment-details/:paymentId", async (req, res) => {
- const paymentId = req.params.paymentId;
- try {
-   const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+// app.get("/get-payment-details/:paymentId", async (req, res) => {
+//  const paymentId = req.params.paymentId;
+//  try {
+//    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
 
-   console.log("Payment Intent:", paymentIntent);
-   
-    if (paymentIntent.charges && paymentIntent.charges.data.length > 0) {
-      const receiptUrl = paymentIntent.charges.data[0].receipt_url;
-      res.json({ receiptUrl: receiptUrl });
-    } else {
-      res.status(404).json({ error: "No charges found for this payment intent" });
-    }
+//    console.log("Payment Intent:", paymentIntent);
 
- } catch (e) {
-   console.log(e.message);
-   res.json({ error: e.message });
-   res.status(500).json({ error: "Failed to retrieve payment details" });
- }
-});
+//     if (paymentIntent.charges && paymentIntent.charges.data.length > 0) {
+//       const receiptUrl = paymentIntent.charges.data[0].receipt_url;
+//       res.json({ receiptUrl: receiptUrl });
+//     } else {
+//       res.status(404).json({ error: "No charges found for this payment intent" });
+//     }
+
+//  } catch (e) {
+//    console.log(e.message);
+//    res.json({ error: e.message });
+//    res.status(500).json({ error: "Failed to retrieve payment details" });
+//  }
+// });
 
 
 app.all(/.*/, (req, res) => {
