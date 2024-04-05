@@ -28,9 +28,9 @@ app.post("/create-payment-intent", async (req, res) => {
   const { paymentMethodType, currency, amount, receipt_email, customer } = req.body;
 
   const numericAmount = parseFloat(amount);
-  
+
   console.log('original amount', amount);
-  console.log('Type of amount:', typeof amount);
+  console.log('Typeof amount:', typeof amount);
   try {
     let stripeCustomer;
 
