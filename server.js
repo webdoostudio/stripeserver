@@ -28,7 +28,7 @@ app.post("/create-payment-intent", async (req, res) => {
   const { paymentMethodType, currency, amount, receipt_email, customer } = req.body;
 
   const numericAmount = parseFloat(amount);
-  const finalAmount = Number(numericAmount).toFixed(2)
+  const finalAmount = Number(numericAmount).toFixed(2);
 
   console.log('original amount', finalAmount);
   console.log('Typeof amount:', typeof finalAmount);
