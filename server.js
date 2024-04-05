@@ -45,6 +45,7 @@ app.post("/create-payment-intent", async (req, res) => {
     // Create payment intent with customer ID
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Number(amount) * 100,
+       console.log('amount', amount);
       currency: currency,
       payment_method_types: [paymentMethodType],
       description: 'Boundty service',
