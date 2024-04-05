@@ -30,7 +30,7 @@ app.post("/create-payment-intent", async (req, res) => {
   const numericAmount = parseFloat(amount);
   const finalAmount = Number(numericAmount).toFixed(2);
 
-  console.log('original amount', finalAmount);
+  console.log('original the amount', finalAmount);
   console.log('Typeof amount:', typeof finalAmount);
   try {
     let stripeCustomer;
