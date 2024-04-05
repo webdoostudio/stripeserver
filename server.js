@@ -28,6 +28,7 @@ app.post("/create-payment-intent", async (req, res) => {
   const { paymentMethodType, currency, amount, receipt_email, customer } = req.body;
 
   console.log('original amount', amount);
+  console.log('Type of amount:', typeof amount);
   try {
     let stripeCustomer;
 
@@ -54,12 +55,8 @@ app.post("/create-payment-intent", async (req, res) => {
       customer: stripeCustomer.id, // Link payment to customer profile
     });
 
-       console.log('after convert amount', amount);
-
     const clientSecret = paymentIntent.client_secret;
     const paymentId = paymentIntent.id;
-
-    console.log('Payment Intent Response:', paymentIntent);
 
     res.json({
       clientSecret: clientSecret,
