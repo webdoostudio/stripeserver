@@ -28,9 +28,10 @@ app.post("/create-payment-intent", async (req, res) => {
   const { paymentMethodType, currency, amount, receipt_email, customer } = req.body;
 
   const numericAmount = parseFloat(amount);
+  const finalAmount = Number(numericAmount).toFixed(2)
 
-  console.log('original amount', numericAmount);
-  console.log('Typeof amount:', typeof numericAmount);
+  console.log('original amount', finalAmount);
+  console.log('Typeof amount:', typeof finalAmount);
   try {
     let stripeCustomer;
 
@@ -49,7 +50,7 @@ app.post("/create-payment-intent", async (req, res) => {
 
     // Create payment intent with customer ID
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Number(numericAmount) * 100,
+      amount: Number(finalAmount) * 100,
       currency: currency,
       payment_method_types: [paymentMethodType],
       description: 'Boundty service',
